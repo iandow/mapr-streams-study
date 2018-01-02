@@ -6,6 +6,6 @@ package com.mapr.examples;
 public class PerfMonitor {
     public static void print_status(long records_processed, long startTime) {
         long elapsedTime = System.nanoTime() - startTime;
-        System.out.printf("Throughput = %.2f msgs/sec processed. Total messages = %d\n", records_processed / ((double) elapsedTime / 1000000000.0), records_processed);
+        System.out.printf("Stream throughput = %.2f msgs/sec. Stream message count = %d\n", records_processed / ((double) elapsedTime / 1000000000.0), records_processed);
     }
 }

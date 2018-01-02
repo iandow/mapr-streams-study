@@ -1,6 +1,8 @@
 package com.mapr.examples;/* Copyright (c) 2009 & onwards. MapR Tech, Inc., All rights reserved */
 
 import com.google.common.io.Resources;
+import com.mapr.db.Admin;
+import com.mapr.db.MapRDB;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -14,6 +16,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Inbox;
 import akka.actor.Props;
+import org.ojai.store.DriverManager;
 
 public class AkkaConsumer {
     // Declare a new consumer.
@@ -24,23 +27,34 @@ public class AkkaConsumer {
     private static void parse(String record) throws ParseException {
         parser.tell(new AkkaPersister.ParseMe(record), ActorRef.noSender());
     }
-    public static void main(String[] args) {
-        final Inbox inbox = Inbox.create(system);
 
+    public static void main(String[] args) {
         Runtime runtime = Runtime.getRuntime();
-        if (args.length < 2) {
+        if (args.length < 3) {
             System.err.println("ERROR: You must specify a stream:topic to consume data from.");
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer [stream:topic]\n" +
+                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer stream:topic table\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer /user/mapr/mystream:mytopic");
-
+                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer /user/mapr/mystream:mytopic /tmp/mytable");
+            runtime.exit(1);
         }
 
-        String topic =  args[1] ;
-        System.out.println("Subscribed to : "+ topic);
+        String topic =  args[1];
+        String table_path = args[2];
 
+        System.out.println("Subscribed to: "+ topic);
         configureConsumer();
+
+        final Inbox inbox = Inbox.create(system);
+        String ojai_connection_url = "ojai:mapr:";
+        AkkaPersister.CONNECTION = DriverManager.getConnection(ojai_connection_url);
+        AkkaPersister.TABLE_PATH = table_path;
+        try (Admin admin = MapRDB.newAdmin()) {
+            if (!admin.tableExists(AkkaPersister.TABLE_PATH)) {
+                admin.createTable(AkkaPersister.TABLE_PATH).close();
+            }
+        }
+        System.out.println("Persisting to table: "+ AkkaPersister.TABLE_PATH);
 
         List<String> topics = new ArrayList<String>();
         topics.add(topic);
@@ -53,9 +67,10 @@ public class AkkaConsumer {
         // https://kafka.apache.org/090/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html
         long startTime = System.nanoTime();
         long last_update = 0;
-        final int minBatchSize = 200;
-        List<String> buffer = new ArrayList<>();
-
+        // This buffer controls how many messages we'll buffer before sending to AkkaPersister.
+        // Buffer size of 1 disables buffering.
+        final int akka_buffer_size = 1;
+        List<String> akka_buffer = new ArrayList<>();
 
         try {
             while (true) {
@@ -63,14 +78,14 @@ public class AkkaConsumer {
                 ConsumerRecords<String, String> records = consumer.poll(pollTimeOut);
                 if (records.count() > 0) {
                     for (ConsumerRecord<String, String> record : records) {
-                        buffer.add(record.value());
+                        akka_buffer.add(record.value());
                     }
-                    if (buffer.size() >= minBatchSize) {
-                        for (String msg : buffer) {
+                    if (akka_buffer.size() >= akka_buffer_size) {
+                        for (String msg : akka_buffer) {
                             parse(msg);
                         }
                         consumer.commitSync();
-                        buffer.clear();
+                        akka_buffer.clear();
                     }
                     records_processed += records.count();
 
