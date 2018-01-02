@@ -1,0 +1,16 @@
+com/mapr/examples/PojoProducer$1.class
+com/mapr/examples/AkkaConsumer.class
+com/mapr/examples/BasicConsumer.class
+com/mapr/examples/PojoConsumer.class
+com/mapr/examples/AvroProducer.class
+com/mapr/examples/PerfMonitor.class
+com/mapr/examples/BasicProducer.class
+com/mapr/examples/Person.class
+com/mapr/examples/AkkaPersister$ParseMe.class
+com/mapr/examples/AvroConsumer.class
+com/mapr/examples/AkkaPersister$Status.class
+com/mapr/examples/AkkaProducer.class
+com/mapr/examples/AkkaPersister$Parser.class
+com/mapr/examples/Run.class
+com/mapr/examples/AkkaPersister.class
+com/mapr/examples/PojoProducer.class

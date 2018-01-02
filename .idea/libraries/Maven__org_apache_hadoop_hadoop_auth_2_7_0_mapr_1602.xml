@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.hadoop:hadoop-auth:2.7.0-mapr-1602">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/2.7.0-mapr-1602/hadoop-auth-2.7.0-mapr-1602.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/2.7.0-mapr-1602/hadoop-auth-2.7.0-mapr-1602-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/2.7.0-mapr-1602/hadoop-auth-2.7.0-mapr-1602-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
