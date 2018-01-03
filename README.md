@@ -42,10 +42,7 @@ Finally, open https://localhost:8443, login with mapr / mapr. You don't need to 
 
 ## Step 2: Create a stream and topic
 
-We're going to
-A *stream* is a collection of topics that you can manage together for security, default number or partitions, and time to live for the messages.
-
-Run the following command on your MapR node:
+Define a stream and topic using the following command on your MapR node:
 
 ```
 $ maprcli stream create -path /apps/mystream -produceperm p -consumeperm p -topicperm p -ttl 900
