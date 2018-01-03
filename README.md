@@ -1,4 +1,4 @@
-# MapR Streams Study
+# Patterns for Data Serialization in MapR Streams
 
 The goal of this project is to show common patterns for streaming JSON data and data encapsulated by Java Objects through MapR Streams. The following examples are provided:
 
