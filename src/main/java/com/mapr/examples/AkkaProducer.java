@@ -53,6 +53,7 @@ public class AkkaProducer {
                 if ((Math.floor(System.nanoTime() - startTime) / 1e9) > last_update) {
                     last_update++;
                     producer.flush();
+                    System.out.printf("Producer ");
                     PerfMonitor.print_status(records_processed, startTime);
                 }
                 //System.out.println("Sent message: " + line);

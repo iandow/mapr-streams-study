@@ -1,4 +1,4 @@
-# Patterns for Data Serialization in MapR Streams
+# A Guide to Data Serialization in MapR Streams
 
 The goal of this project is to show common patterns for streaming JSON data and data encapsulated by Java Objects through MapR Streams. The following examples are provided:
 
@@ -121,7 +121,7 @@ This example shows how to stream JSON data and persist each message to MapR-DB. 
 This example is pretty cool, because it's showing how to process streaming messages asynchronously using Akka.  It's also cool because it shows how you can stream rich data structures and process them without schema restrictions.  Here's how to run the producer and consumer:
 
 ```
-wget https://github.com/mapr-demos/customer360/blob/master/clickstream/data/clickstream_data.json
+wget https://raw.githubusercontent.com/mapr-demos/customer360/master/clickstream/data/clickstream_data.json
 java -cp .:./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /apps/mystream:mytopic4 clickstream_data.json
 java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jarapr.examples.Run akkaconsumer /apps/mystream:mytopic4 /apps/mytable
 ```

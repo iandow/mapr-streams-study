@@ -1,9 +1,6 @@
 package com.mapr.examples;
 
 import akka.actor.AbstractActor;
-import com.mapr.db.Admin;
-import com.mapr.db.MapRDB;
-import com.mapr.db.exceptions.DBException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
@@ -15,7 +12,8 @@ import org.ojai.store.Connection;
 import org.ojai.store.DocumentStore;
 
 public class AkkaPersister {
-    public static int count = 0;
+    private static long records_processed = 0L;
+    public static long startTime;
     public static String TABLE_PATH ="";
     public static Connection CONNECTION;
     public static class ParseMe implements Serializable {
@@ -32,16 +30,15 @@ public class AkkaPersister {
         public Receive createReceive() {
             return receiveBuilder()
                     .match(Status.class, message -> {
-                        System.out.println("Akka message count = " + count);
+                        System.out.printf("Akka ");
+                        PerfMonitor.print_status(records_processed, startTime);
                     })
                     .match(ParseMe.class, message -> {
                         try {
                             json = doParse(((ParseMe) message).rawtext);
                             dbInsert(json);
-                            count++;
                         } catch (ParseException e) {
                             System.err.printf("%s", e.getStackTrace());
-                            count++;
                         }
                     })
                     .matchAny(o -> System.out.println("received unknown message"))
@@ -49,6 +46,7 @@ public class AkkaPersister {
         }
 
         private static JSONObject doParse(String rawtext) throws ParseException {
+            records_processed++;
             JSONParser parser = new JSONParser();
             JSONObject json = (JSONObject) parser.parse(rawtext);
             return json;

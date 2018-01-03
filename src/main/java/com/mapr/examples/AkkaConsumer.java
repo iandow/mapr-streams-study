@@ -48,6 +48,7 @@ public class AkkaConsumer {
         final Inbox inbox = Inbox.create(system);
         String ojai_connection_url = "ojai:mapr:";
         AkkaPersister.CONNECTION = DriverManager.getConnection(ojai_connection_url);
+        AkkaPersister.startTime = System.nanoTime();
         AkkaPersister.TABLE_PATH = table_path;
         try (Admin admin = MapRDB.newAdmin()) {
             if (!admin.tableExists(AkkaPersister.TABLE_PATH)) {
@@ -64,7 +65,6 @@ public class AkkaConsumer {
         long pollTimeOut = 100;  // milliseconds
         long records_processed = 0L;
 
-        // https://kafka.apache.org/090/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html
         long startTime = System.nanoTime();
         long last_update = 0;
         // This buffer controls how many messages we'll buffer before sending to AkkaPersister.
@@ -82,7 +82,8 @@ public class AkkaConsumer {
                     }
                     if (akka_buffer.size() >= akka_buffer_size) {
                         for (String msg : akka_buffer) {
-                            parse(msg);
+                            if (msg != null && msg.length() > 0)
+                                parse(msg);
                         }
                         consumer.commitSync();
                         akka_buffer.clear();
@@ -94,6 +95,7 @@ public class AkkaConsumer {
                         // Ask the actor to print status
                         inbox.send(parser, new AkkaPersister.Status());
                         last_update++;
+                        System.out.printf("Consumer ");
                         PerfMonitor.print_status(records_processed, startTime);
                     }
                 }

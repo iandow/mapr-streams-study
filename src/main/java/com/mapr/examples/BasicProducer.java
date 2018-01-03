@@ -52,6 +52,7 @@ public class BasicProducer {
                 {
                     last_update ++;
                     producer.flush();
+                    System.out.printf("Producer ");
                     PerfMonitor.print_status(records_processed,startTime);
                 }
                 line = reader.readLine();

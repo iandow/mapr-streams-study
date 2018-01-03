@@ -50,7 +50,6 @@ public class AvroConsumer {
         long pollTimeOut = 100;  // milliseconds
         long records_processed = 0L;
 
-        // https://kafka.apache.org/090/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html
         long startTime = System.nanoTime();
         long last_update = 0;
 
