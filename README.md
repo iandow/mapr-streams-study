@@ -85,7 +85,7 @@ java -cp target/mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.exampl
 Run a producer in another ssh connection, like this:
 
 ```
-java -cp .:./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /apps/mystream:mytopic
+java -cp .:./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run producer /apps/mystream:mytopic
 ```
 
 Now, type some stuff in the producer and you should see it received on the consumer.
