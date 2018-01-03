@@ -1,13 +1,14 @@
 # MapR Streams Study
 
-When data is communicated through streams it must be encoded into primitive types such as Strings or Byte arrays. Sometimes its relatively straightforward to translate data to/from these primitive types. For example,the various attributes of JSON data can be easily parsed from Strings. Other times we need to define schemas or data classes which can be applied to Byte arrays in order to reconstruct the original data type.
-
-The goal of this project is to show common patterns for streaming JSON data and data encapsulated by Plain Old Java Object (POJO) types through MapR Streams. The following examples are provided:
+The goal of this project is to show common patterns for streaming JSON data and data encapsulated by Java Objects through MapR Streams. The following examples are provided:
 
 1. Streaming plain text messages
 2. Streaming rich data structures with Avro encoding
 3. Streaming plain-old-java-objects (POJOs)
 4. Streaming JSON documents and persisting each message to MapR-DB tables
+
+When data structures are communicated through MapR Streams they must be encoded into primitive types such as Strings or Byte arrays. This is often pretty straightforward. For example, JSON data structures can be easily formatted from as String types. Other complex types, such as Java Objects, require that we specify user-defined schemas or data classes which can be used to reconstruct the original data type from streamed Byte arrays. This project demonstrates a variety of ways in which various data types can be used in MapR Streams.
+
 
 ## Prerequisites
 
