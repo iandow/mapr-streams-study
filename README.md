@@ -92,7 +92,7 @@ Now, type some stuff in the producer and you should see it received on the consu
 
 You just streamed plain text messages through MapR Streams. However, applications often need to stream data, not just plain-text messages. The next example shows how to do that.
 
-## Step 5. Streaming JSON data with Avro encoding
+## Step 5. Stream JSON data with Avro encoding
 
 [Avro](https://avro.apache.org/docs/current/) is a data encoding library that uses user-defined schemas to convert rich data structures to compact Byte arrays for streaming. You can stream Avro encoded messages on your MapR node with the following two commands:
 
@@ -103,7 +103,7 @@ java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Ru
 
 The producer will stream a couple hundred Avro encoded messages and the consumer will decode them and print their contents. Note how we specified a different topic than in the last example. Here we're using "mytopic2". We can't use the topic in the past example (unless we delete it) because it contains messages that don't comply with the schema we defined in Avro. If we did try to attach avroconsumer to "mystream:mytopic", it would fail. Avro was designed to provide this kind of schema enforcement for data validation purposes.
 
-## Step 6. Streaming plain-old-java-objects (POJOs)
+## Step 6. Stream plain-old-java-objects (POJOs)
 
 This example shows how to convert POJOs to binary streams and back. It also shows how to invoke a synchronous callback after a data record has been sent by a stream producer. Run these examples with the following commands:
 
@@ -114,7 +114,7 @@ java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Ru
 
 The two examples we just discussed for streaming Avro encoded data and POJOs are tied to a specific schema. If you accidentally publish a different type of message to the stream the consumers will fail. That kind of schema enforcement is sometimes desirable for data validation, but contrast that with the next example which encodes data as JSON messages and consequently provides the flexibility for a single stream to be used for schema-free data.
 
-### Step 7. Streaming JSON documents and persisting each message to MapR-DB tables
+## Step 7. Stream JSON documents and persisting each message to MapR-DB tables
 
 This example shows how to stream JSON data and persist each message to MapR-DB. Akka is used to asynchronously parse and save the streamed JSON messages to MapR-DB. This way we can avoid blocking stream reads when we're parsing and persisting messages, which is important since we can read from a stream faster than we can persist to disk. Unlike to previous two examples, we're encoding the streamed JSON data as Strings (not Byte arrays). The Akka message processor converts each message to a JSON document using the Open JSON Application Interface (OJAI) and persists that to MapR-DB JSON tables.
 
@@ -143,7 +143,7 @@ maprdb root:> find /apps/mytable --limit 2
 
 For more information about using MapR-DB in the MapR developer sandbox, check out the excellent tutorial at [https://github.com/mapr-demos/mapr-db-60-getting-started](https://github.com/mapr-demos/mapr-db-60-getting-started).
 
-### How to debug with breakpoints in IntelliJ
+## How to debug with breakpoints in IntelliJ
 
 IntelliJ and many other Java IDEs provide elegant debuggers with which you can set breakpoints and inspect programs executing on remote hosts. Here's how to attach the IntelliJ debugger to any Java process you start in the MapR developer container:
 
