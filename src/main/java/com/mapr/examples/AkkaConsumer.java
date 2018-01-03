@@ -33,9 +33,9 @@ public class AkkaConsumer {
         if (args.length < 3) {
             System.err.println("ERROR: You must specify a stream:topic to consume data from.");
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer stream:topic table\n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer stream:topic table\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer /user/mapr/mystream:mytopic /tmp/mytable");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer /user/mapr/mystream:mytopic /tmp/mytable");
             runtime.exit(1);
         }
 

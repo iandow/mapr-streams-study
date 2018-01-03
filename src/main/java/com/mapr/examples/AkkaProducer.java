@@ -15,9 +15,9 @@ public class AkkaProducer {
 
         if (args.length != 2 && args.length != 3) {
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer stream:topic input_json_file\n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer stream:topic input_json_file\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /user/mapr/mystream:mytopic input_data.json");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /user/mapr/mystream:mytopic input_data.json");
 
         }
 

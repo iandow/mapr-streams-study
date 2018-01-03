@@ -29,9 +29,9 @@ public class AvroProducer {
         public static void main(String[] args) throws IOException {
             if (args.length != 2 && args.length != 3) {
                 System.err.println("USAGE:\n" +
-                        "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroproducer stream:topic \n" +
+                        "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroproducer stream:topic \n" +
                         "Example:\n" +
-                        "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroproducer /user/mapr/mystream:mytopic");
+                        "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroproducer /user/mapr/mystream:mytopic");
 
             }
 
@@ -43,7 +43,7 @@ public class AvroProducer {
             Schema schema = parser.parse(USER_SCHEMA);
             Injection<GenericRecord, byte[]> recordInjection = GenericAvroCodecs.toBinary(schema);
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 100; i++) {
                 GenericData.Record avroRecord = new GenericData.Record(schema);
                 avroRecord.put("str1", "Str 1-" + i);
                 avroRecord.put("str2", "Str 2-" + i);
@@ -51,7 +51,7 @@ public class AvroProducer {
 
                 byte[] bytes = recordInjection.apply(avroRecord);
 
-                ProducerRecord<String, byte[]> record = new ProducerRecord<>("mytopic", bytes);
+                ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, bytes);
                 producer.send(record);
 
                 try {
@@ -77,7 +77,7 @@ public class AvroProducer {
                 "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer",
                 "org.apache.kafka.common.serialization.ByteArraySerializer");
-        producer = new KafkaProducer<String, String>(props);
+        producer = new KafkaProducer<String, byte[]>(props);
     }
 
 }

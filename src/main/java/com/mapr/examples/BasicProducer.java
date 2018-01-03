@@ -16,9 +16,9 @@ public class BasicProducer {
 
         if (args.length != 2 && args.length != 3) {
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run producer stream:topic [source data file] \n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run producer stream:topic [source data file] \n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run producer /user/mapr/mystream:mytopic input_data.json");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run producer /user/mapr/mystream:mytopic input_data.json");
 
         }
 

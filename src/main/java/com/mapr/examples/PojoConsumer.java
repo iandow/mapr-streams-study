@@ -30,9 +30,9 @@ public class PojoConsumer {
         if (args.length < 2) {
             System.err.println("ERROR: You must specify a stream:topic to consume data from.");
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run pojoconsumer [stream:topic]\n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run pojoconsumer [stream:topic]\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run pojoconsumer /user/mapr/mystream:mytopic");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run pojoconsumer /user/mapr/mystream:mytopic");
 
         }
 
@@ -56,26 +56,26 @@ public class PojoConsumer {
         try {
             while (true) {
                 ConsumerRecords<String, byte[]> records = consumer.poll(100);
-                for (ConsumerRecord<String, byte[]> record : records) {
-                    System.out.printf("offset = %d, key = %s, value = %s\n",
-                            record.offset(), record.key(), record.value());
-
-                    //Create object from bytes:
-                    ByteArrayInputStream bis = new ByteArrayInputStream(record.value());
-                    ObjectInput in = new ObjectInputStream(bis);
-                    try {
-                        Object obj = in.readObject();
-                        System.out.println("Consumed object " + obj);
-                        Person p2 = (Person)obj;
-                        System.out.println("Consumed person " + p2.getName());
-
-                    } finally {
+                if (records.count() > 0) {
+                    System.out.println("Consumed " + records.count() + " messages");
+                    for (ConsumerRecord<String, byte[]> record : records) {
+                        records_processed++;
+                        //Create object from bytes:
+                        ByteArrayInputStream bis = new ByteArrayInputStream(record.value());
+                        ObjectInput in = new ObjectInputStream(bis);
                         try {
-                            if (in != null) {
-                                in.close();
+                            Object obj = in.readObject();
+                            Person p2 = (Person) obj;
+                            System.out.printf("offset = %d, pojo id = '%s'\n",
+                                    record.offset(), p2.getId());
+                        } finally {
+                            try {
+                                if (in != null) {
+                                    in.close();
+                                }
+                            } catch (IOException ex) {
+                                System.err.printf("%s", ex.getStackTrace());
                             }
-                        } catch (IOException ex) {
-                            // ignore close exception
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public class PojoConsumer {
         props.put("key.deserializer",
                 "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer",
-                "org.apache.kafka.common.serialization.StringDeserializer");
+                "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         consumer = new KafkaConsumer<String, String>(props);
     }
 

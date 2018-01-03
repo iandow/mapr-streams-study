@@ -31,9 +31,9 @@ public class AvroConsumer {
         if (args.length < 2) {
             System.err.println("ERROR: You must specify a stream:topic to consume data from.");
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroconsumer [stream:topic]\n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroconsumer [stream:topic]\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroconsumer /user/mapr/mystream:mytopic");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroconsumer /user/mapr/mystream:mytopic");
 
         }
 
@@ -101,8 +101,8 @@ public class AvroConsumer {
         props.put("key.deserializer",
                 "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer",
-                "org.apache.kafka.common.serialization.ByteArraySerializer");
-        consumer = new KafkaConsumer<String, String>(props);
+                "org.apache.kafka.common.serialization.ByteArrayDeserializer");
+        consumer = new KafkaConsumer<String, byte[]>(props);
     }
 
 }

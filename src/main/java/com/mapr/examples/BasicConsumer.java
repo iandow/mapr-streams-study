@@ -17,9 +17,9 @@ public class BasicConsumer {
         if (args.length < 2) {
             System.err.println("ERROR: You must specify a stream:topic to consume data from.");
             System.err.println("USAGE:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run consumer [stream:topic]\n" +
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run consumer [stream:topic]\n" +
                     "Example:\n" +
-                    "\tjava -cp `mapr classpath`:./nyse-taq-streaming-1.0-jar-with-dependencies.jar com.mapr.examples.Run consumer /user/mapr/mystream:mytopic");
+                    "\tjava -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run consumer /user/mapr/mystream:mytopic");
 
         }
 
