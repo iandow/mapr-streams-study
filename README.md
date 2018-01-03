@@ -41,7 +41,8 @@ Finally, open https://localhost:8443, login with mapr / mapr. You don't need to 
 
 ## Step 2: Create a stream and topic
 
-A *stream* is a collection of topics that you can manage together for security, default number or partitions, and time to leave for the messages.
+We're going to
+A *stream* is a collection of topics that you can manage together for security, default number or partitions, and time to live for the messages.
 
 Run the following command on your MapR node:
 
@@ -102,7 +103,7 @@ java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Ru
 java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run avroproducer /apps/mystream:mytopic2
 ```
 
-The producer will stream a couple hundred Avro encoded messages and the consumer will decode them and print their contents.
+The producer will stream a couple hundred Avro encoded messages and the consumer will decode them and print their contents. Note how we specified a different topic than in the last example. Here we're using "mytopic2". We can't use the topic in the past example (unless we delete it) because it contains messages that don't comply with the schema we defined in Avro. If we did try to attach avroconsumer to "mystream:mytopic", it would fail. Avro was designed to provide this kind of schema enforcement for data validation purposes.
 
 ## Step 6. Streaming plain-old-java-objects (POJOs)
 
