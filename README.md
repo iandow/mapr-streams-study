@@ -1,4 +1,4 @@
-# A Guide to Data Serialization in MapR Streams
+# A Guide to the MapR Streams Java API
 
 The goal of this project is to show common patterns for streaming JSON data and data encapsulated by Java Objects through MapR Streams. The following examples are provided:
 
@@ -16,7 +16,7 @@ When data structures are communicated through MapR Streams they must be encoded 
 * JDK 8
 * Maven 3.x
 
-MapR Container For Developers is a docker image that enables you to quickly deploy a MapR environment on your developer machine. Installation steps can be found [**here**](https://maprdocs.mapr.com/home/MapRContainerDevelopers/MapRContainerDevelopersOverview.html), but basically you run the following commands to install a small 1 node MapR cluster in docker on your Mac:
+MapR Container For Developers is a docker image that enables you to quickly deploy a single-node MapR instance on a workstation. It is designed to give software developers an easy way to experiment with the APIs for MapR Streams, MapR-DB, and Spark without the burden of connecting to a real cluster. Installation steps can be found [**here**](https://maprdocs.mapr.com/home/MapRContainerDevelopers/MapRContainerDevelopersOverview.html). The installation basically consists of running the following commands on your Mac:
 
 ```
 $ wget https://raw.githubusercontent.com/mapr-demos/mapr-db-60-getting-started/master/mapr_devsandbox_container_setup.sh
@@ -114,7 +114,7 @@ java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Ru
 
 The two examples we just discussed for streaming Avro encoded data and POJOs are tied to a specific schema. If you accidentally publish a different type of message to the stream the consumers will fail. That kind of schema enforcement is sometimes desirable for data validation, but contrast that with the next example which encodes data as JSON messages and consequently provides the flexibility for a single stream to be used for schema-free data.
 
-## Step 7. Stream JSON documents and persisting each message to MapR-DB tables
+## Step 7. Stream JSON data and persisting each message to MapR-DB tables
 
 This example shows how to stream JSON data and persist each message to MapR-DB. Akka is used to asynchronously parse and save the streamed JSON messages to MapR-DB. This way we can avoid blocking stream reads when we're parsing and persisting messages, which is important since we can read from a stream faster than we can persist to disk. Unlike to previous two examples, we're encoding the streamed JSON data as Strings (not Byte arrays). The Akka message processor converts each message to a JSON document using the Open JSON Application Interface (OJAI) and persists that to MapR-DB JSON tables.
 
@@ -122,8 +122,8 @@ This example is pretty cool, because it's showing how to process streaming messa
 
 ```
 wget https://raw.githubusercontent.com/mapr-demos/customer360/master/clickstream/data/clickstream_data.json
-java -cp .:./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /apps/mystream:mytopic4 clickstream_data.json
-java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jarapr.examples.Run akkaconsumer /apps/mystream:mytopic4 /apps/mytable
+java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaproducer /apps/mystream:mytopic4 clickstream_data.json
+java -cp ./mapr-streams-study-1.0-jar-with-dependencies.jar com.mapr.examples.Run akkaconsumer /apps/mystream:mytopic4 /apps/mytable
 ```
 
 After the consumer starts persisting messages, you can use Drill to inspect what was inserted into MapR-DB with the following command (run this on the MapR node):
@@ -142,6 +142,13 @@ maprdb root:> find /apps/mytable --limit 2
 ```
 
 For more information about using MapR-DB in the MapR developer sandbox, check out the excellent tutorial at [https://github.com/mapr-demos/mapr-db-60-getting-started](https://github.com/mapr-demos/mapr-db-60-getting-started).
+
+## Step 8. Stream JSON data and consume with Spark Streaming
+
+Run this on your Mac:
+```
+java -cp target/mapr-streams-study-1.0-jar-th-dependencies.jar com.mapr.examples.ClickstreamConsumer /apps/mystream:mytopic
+```
 
 ## How to debug with breakpoints in IntelliJ
 

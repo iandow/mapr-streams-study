@@ -1,4 +1,4 @@
-package com.mapr.examples;/* Copyright (c) 2009 & onwards. MapR Tech, Inc., All rights reserved */
+package com.mapr.examples;
 
 import com.google.common.io.Resources;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
